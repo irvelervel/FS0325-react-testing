@@ -1,6 +1,11 @@
 // testiamo il componente UsersList
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import UsersList from '../components/UsersList'
 
@@ -42,6 +47,12 @@ describe('after finished promise', () => {
   it('makes the spinner disappear and populates the users list', async () => {
     // 1)
     render(<UsersList />)
+    // Stefano dal futuro (13:14): nella documentazione di testing-library
+    // (https://testing-library.com/docs/guide-disappearance/#waiting-for-disappearance)
+    // ho scoperto questo metodo "waitForElementToBeRemoved()" che aspetta
+    // l'eventuale scomparsa di un elemento inizialmente presente. In questo
+    // modo il test passa :)
+    await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'))
     // 2)
     const arrayOfListItems = await screen.findAllByTestId('list-user')
     // ora ho aspettato il termine della Promise e verifichiamo una volta
@@ -49,12 +60,6 @@ describe('after finished promise', () => {
     // 4)
     // expect(arrayOfListItems).toHaveLength(10)
     expect(arrayOfListItems.length).toBeGreaterThan(0)
-
-    // WIP
-    // const spinner = await screen.findByTestId('spinner')
-    // console.log('spinner', spinner)
-    // // 4)
-    // expect(spinner).not.toBeInTheDocument()
   })
   it('returns just 2 result with a specific search', async () => {
     // 1)
