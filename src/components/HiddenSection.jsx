@@ -21,7 +21,11 @@ const HiddenSection = () => {
           </div>
           {show && (
             <Card className="mt-3">
-              <Card.Img variant="top" src="https://placecats.com/500/500" />
+              <Card.Img
+                variant="top"
+                alt="gattino"
+                src="https://placecats.com/500/500"
+              />
               <Card.Body>
                 <Card.Title>Card Title</Card.Title>
                 <Card.Text>
